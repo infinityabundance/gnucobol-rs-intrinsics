@@ -2,13 +2,14 @@
 name = "gnucobol-rs-intrinsics"
 version = "0.1.0"
 edition = "2021"
-description = "gnucobol-rs intrinsic functions: pure stateless numeric/string/date intrinsics."
+description = "gnucobol-rs intrinsic functions: an ergonomic FUNCTION-intrinsic API (NUMVAL, INTEGER, MOD/REM, UPPER/LOWER/REVERSE, ORD/CHAR, LENGTH, date) over the oracle-proven gnucobol-rs core primitives."
 authors = ["infinityabundance"]
 license = "LGPL-3.0-or-later"
 repository = "https://github.com/infinityabundance/gnucobol-rs-intrinsics"
 readme = "README.md"
-publish = false  # empty scaffold; flip to publishable once the implementation lands
+keywords = ["cobol", "gnucobol", "intrinsic", "numval", "function"]
+categories = ["encoding", "parsing"]
+publish = false  # path-dep on the core for now; flip to a `gnucobol-rs = "0.7"` version dep + publish once the core is on crates.io
 
 [dependencies]
-# A faithful-port satellite of the gnucobol-rs ecosystem. Depends on the gnucobol-rs core primitives.
-# Activate when the implementation lands: gnucobol-rs = "0.7"
+gnucobol-rs = { path = "../gnucobol-rs/crates/gnucobol-rs" }

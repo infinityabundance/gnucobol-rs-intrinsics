@@ -1,21 +1,28 @@
 # gnucobol-rs-intrinsics
 
-gnucobol-rs intrinsic functions: pure stateless numeric/string/date intrinsics.
+An ergonomic `FUNCTION`-intrinsic API over the oracle-proven [`gnucobol-rs`](https://github.com/infinityabundance/gnucobol-rs) core.
 
-A faithful-port satellite of the **gnucobol-rs** ecosystem -- an oracle-first Rust compatibility court for
-GnuCOBOL 3.2 (byte-exact vs the real cobc/libcob, fail-closed, receipt-backed). This crate ports: intrinsic functions (libcob/intrinsic.c).
+Each function is a thin, value-faithful wrapper around a primitive already proven **byte/value-identical to
+GnuCOBOL 3.2** by a sealed court (the `GNURUST.INTRINSIC.*` campaigns). This crate adds only the user-facing
+shape — strings / `Decimal` in, strings / `Decimal` / integers out.
 
-## Profile
-Intended: **no_std / no_alloc / no_unsafe**.
+```rust
+use gnucobol_rs_intrinsics as f;
 
-## Ecosystem
-- gnucobol-rs (core) = oracle-proven data-division primitives (PIC, layout, COMP-3, MOVE, VALUE, arithmetic).
-- gnucobol-rs-exec / -io / -intrinsics / -link / -tui = the modular runtime satellites (this is one).
-- gnucobol-rs-* MAY depend on the gnucobol-rs core; the core MUST NOT depend on a satellite.
-- kobold-* (Apache-2.0, separate repos) = the forensic-intelligence layer ABOVE the ecosystem.
+assert_eq!(f::upper_case("abc"), "ABC");
+assert_eq!(f::numval("123.45").unscaled_i128(), Some(12345)); // scale 2 -> 123.45
+assert_eq!(f::modulo(-17, 5), 3);    // FUNCTION MOD  — divisor sign
+assert_eq!(f::remainder(-17, 5), -2); // FUNCTION REM  — dividend sign
+assert_eq!(f::ord(b'A'), 66);
+```
+
+Provides: `NUMVAL`, `NUMVAL-C`, `INTEGER` (FLOOR), `INTEGER-PART` (TRUNC), `MOD`, `REM`, `UPPER-CASE`,
+`LOWER-CASE`, `REVERSE`, `ORD`, `CHAR`, `LENGTH`, and the date intrinsics (`INTEGER-OF-DATE` /
+`DATE-OF-INTEGER` / `INTEGER-OF-DAY` / `DAY-OF-INTEGER`).
+
+## Architecture
+- `gnucobol-rs` (separate crate) — the oracle-proven semantic primitive layer.
+- `gnucobol-rs-*` — faithful-port satellites; they depend on the core, the core does not depend on them.
 
 ## License
-**LGPL-3.0-or-later** (faithful derivative of GnuCOBOL/libcob; FSF copyright retained). See COPYING.LESSER + COPYING.
-
-## Status
-Scaffold only -- repo initialized, no implementation yet. Implementation follows the split/planning pass.
+LGPL-3.0-or-later — a faithful derivative of GnuCOBOL/libcob (FSF copyright retained). See COPYING.LESSER (+ COPYING).
